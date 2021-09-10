@@ -1,0 +1,29 @@
+name: "WPCanny Build Action"
+description: "Build WPCanny plugins using Composer and NPM."
+author: WPCanny
+branding:
+  icon: "upload-cloud"
+  color: "blue"
+inputs:
+  generate-zip:
+    description: "Generate package zip file?"
+    required: false
+    default: "true"
+outputs:
+  path:
+    description: "Build path"
+    value: ${{ steps.build.outputs.path }}
+  version:
+    description: "Plugin version"
+    value: ${{ steps.build.outputs.version }}
+  zip-path:
+    description: "Zip file path"
+    value: ${{ steps.build.outputs.zip-path }}
+runs:
+  using: "composite"
+  steps:
+    - id: build
+      env:
+        INPUT_GENERATE_ZIP: ${{ inputs.generate-zip }}
+      run: ${{ github.action_path }}/build.sh
+      shell: bash
